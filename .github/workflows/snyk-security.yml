@@ -51,14 +51,16 @@ jobs:
         #        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        #with:
+        with:
+          args: --sarif-file-output=snyk-os.sarif
         #  args: --severity-threshold=high
+        #continue-on-error: true # To make sure that SARIF upload gets called
 
-        # continue-on-error: true # To make sure that SARIF upload gets called
-        # env:
-        #   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        # with:
-        #   args: --sarif-file-output=snyk.sarif
+      # Push the results into GitHub Code Scanning tab
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk-os.sarif
 
   code-security:
     needs: [setup]
@@ -72,6 +74,12 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: code test
+          args: --sarif-file-output=snyk-code.sarif
+      # Push the results into GitHub Code Scanning tab
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk-code.sarif
 
   iac-security:
     needs: [setup]
@@ -83,11 +91,10 @@ jobs:
         #        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        # with:
-        #   command: iac test
-
-        # Push the Snyk Code results into GitHub Code Scanning tab
-      # - name: Upload result to GitHub Code Scanning
-      #   uses: github/codeql-action/upload-sarif@v2
-      #   with:
-      #     sarif_file: snyk.sarif
+        with:
+          args: --sarif-file-output=snyk-iac.sarif
+      # Push the results into GitHub Code Scanning tab
+      - name: Upload result to GitHub Code Scanning
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: snyk-iac.sarif
