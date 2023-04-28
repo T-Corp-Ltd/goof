@@ -38,8 +38,8 @@ jobs:
     steps:
       - name: Set up Snyk CLI to check for security issues
         uses: actions/checkout@master
-      - name: Run Snyk to check for Open Source vulnerabilities
-        uses: snyk/actions/node@master
+      - name: Setup Snyk to check for Node vulns
+        uses: actions/setup-node@master
 
   os-security:
     needs: [setup]
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
+        uses: snyk/actions/node@master
         #        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
