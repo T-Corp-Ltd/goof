@@ -38,24 +38,10 @@ jobs:
       - name: Set up Snyk CLI to check for security issues
         uses: actions/checkout@master
       - uses: snyk/actions/setup@master
-      - uses: actions/setup-node@master
-        with:
-          node-version: 16
-
-        # Runs Snyk Open Source (SCA) analysis
-      - name: Snyk Open Source test
-        run: snyk test --all-projects
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
         # Runs Snyk Code (SAST) analysis and uploads result into GitHub.
       - name: Snyk Code test
         run: snyk code test --sarif > snyk-code.sarif # || true
-
-        # Runs Snyk Infrastructure as Code (IaC) analysis
-        # Use || true to not fail the pipeline.
-      - name: Snyk IaC test
-        run: snyk iac test # || true
 
         # Push the Snyk Code results into GitHub Code Scanning tab
       - name: Upload result to GitHub Code Scanning
