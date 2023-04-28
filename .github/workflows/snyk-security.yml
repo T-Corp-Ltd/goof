@@ -36,7 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Snyk CLI to check for security issues
-      - uses: actions/checkout@master
+        uses: actions/checkout@master
       - uses: snyk/actions/setup@master
       - uses: actions/setup-node@master
         with:
